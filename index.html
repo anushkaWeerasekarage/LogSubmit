@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Stylesheet'); ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="goto" onclick="newSheet()">
+      <button type="button" style="margin-left:500px;margin-top:100px;">Go to form</button>
+    </div>
+    <div id="sheet_frame">
+       <!--<iframe id="myFrame" src="https://docs.google.com/spreadsheets/d/1mb5wU82-l4pgGi7MpVC5JAJ0S5HAQx4SvAjw-v9SM4o/edit?usp=sharing" height="500" width="900"></iframe>-->
+       <iframe id="myFrame" src=""></iframe>
+
+    </div>
+    <div id="subButton" style="margin: auto;float: right;">
+       <button type="button" onclick="submitSheet()">Submit</button>
+    </div>
+    <script>
+    
+        function newSheet() {
+        
+            $("#goto").hide();
+            $("#sheet_frame").show();
+            $("#subButton").show();
+            
+           google.script.run.withSuccessHandler(function(val){
+              try {
+                $("#myFrame").attr("src", val);
+                console.log(val);
+               }
+             catch(err) {
+                console.log("this is the error "+err);
+            }
+          
+           
+           }).withFailureHandler(function error(){
+              console.log("error loading url");
+           }).createSheet();
+          
+    }
+    
+        
+        function submitSheet() {
+          var url = $("#myFrame").attr("src");
+          //alert(url);
+          google.script.run.submit(url);
+          $("#goto").show();
+          $("#sheet_frame").hide();
+          $("#subButton").hide();
+        }
+        
+    </script>
+  </body>
+</html>
+
+
+
+
+
